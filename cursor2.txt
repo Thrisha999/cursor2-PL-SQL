@@ -1,0 +1,35 @@
+--Query:To create a cursor to display the name and salary of each employee in the employees table whose salary is less than that specified by passed in parameter value
+
+--PL/SQL Block:
+declare
+	cursor c2 is select ENAME,salary from empsal;
+	name empsal.ENAME%type;
+	sal empsal.salary%type;
+	s empsal.salary%type;
+begin
+	open c2;
+	s:=&salary;
+	dbms_output.put_line('Name:'||name||'salary:'||sal);
+	dbms_output.put_line('-----'||chr(9)||'-----');
+	loop
+	 fetch c2 into name,sal;
+	 if(sal<s) then
+	  dbms_output.put_line(name||chr(9)||sal);
+	 end if;
+	 exit when c2%notfound;
+	end loop;
+	close c2;
+end;
+/
+--output:
+Enter value for salary: 80000
+old   8:        s:=&salary;
+new   8:        s:=80000;
+Name:salary:
+-----   -----
+Ramu    78000
+shilpa  60000
+ajith   55000
+ajith   55000
+
+PL/SQL procedure successfully completed.
